@@ -30,8 +30,6 @@ Cả ba cùng rà soát lát cắt, phạm vi tính năng, hai kịch bản chí
 | Đồng bộ tài liệu và chuẩn bị repo nộp | Tuấn | Lâm, Hiếu | spec.md khớp UI/ảnh/log; đủ thành viên và bàn L; repo công khai, cấu trúc gọn, không lộ key |
 | Chuẩn bị demo, ca lạ và kiểm tra chéo | Cả ba theo §7 | Cả ba | Mỗi người giải thích phần mình phụ trách, phối hợp xử lý ca lạ và ghi kết quả thực tế sau buổi demo |
 
-Bảng phân công xác định trách nhiệm trên sản phẩm cuối; kết quả đã chạy được đối chiếu bằng ảnh/log và tài liệu kiểm tra. Các nhiệm vụ rà soát hoặc demo được giao không tự được coi là bằng chứng đã thực hiện.
-
 **Phương án chốt:** dùng K5 (thiếu chỗ cho hai hành khách) và K9 (chỉ hoàn vé bé) làm hai ca chính. Prototype thể hiện các bước tra cứu, giữ chỗ, duyệt và chuyển người; phần AI thật đọc tin khách và chọn tool, còn giao dịch vé vẫn giả lập.
 
 **Giả định mô phỏng cần phân biệt với dữ liệu đề:** phạm vi hoàn cả mã trong prototype là cấu hình dựng để thử lỗi hoàn quá tay, không phải kết luận API thật chỉ hỗ trợ cả mã. Khi chưa xác minh được hoàn từng hành khách, K9 dừng và chuyển người kiểm tra; không hứa nhân viên chắc chắn tách được vé. Luồng hoàn cả mã chỉ mô phỏng bước duyệt, không kết nối hãng. Phương thức nhận, thời gian hoàn và SLA nhân viên chưa có trong fixture. Phần bonus trên main chỉ dựa vào log gọi AI mới của tích hợp hiện tại, không dựa vào giao dịch vé mô phỏng.
