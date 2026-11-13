@@ -1,27 +1,11 @@
-# Chi theo doi bai nop LAB5; giu tai lieu de o may de tham khao.
+# Chi theo doi tep bai nop. Giu tai lieu tham khao o may.
 /*
 !/.gitignore
 !/spec.md
 !/prototype/
-
-# Danh sach file can thiet trong prototype.
 /prototype/*
 !/prototype/index.html
-!/prototype/style.css
-!/prototype/app.js
-!/prototype/README.md
-!/prototype/verification.md
-!/prototype/01-doi-nham.png
-!/prototype/02-duyet-doi.png
 !/prototype/anh-1-k5.png
-!/prototype/anh-2-k5-xac-nhan.png
 !/prototype/anh-3-k9.png
-!/so-sanh-cp2-cp3.md
-!/.env.example
-!/prototype/server.mjs
-!/prototype/ai.js
-# Never commit secrets. Review generated evidence before adding it manually.
 **/.env
 **/.env.*
-!/.env.example
-**/ai-evidence.jsonl

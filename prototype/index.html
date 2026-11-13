@@ -254,7 +254,7 @@ function renderStatus(){
   else if(S.ticket === 'changed') h += `<div class="ln"><span class="pill p-neutral">Đã đổi vé</span><span>cả 2 người bay ${F[S.changedTo].code} · ${F[S.changedTo].when}</span></div>`;
   else h += `<div class="ln"><span>Vé gốc BM 213 · đã huỷ</span><span class="pill p-neutral">Chưa đổi vé</span><span class="pill p-neutral">${S.refund === 'draft' ? 'Yêu cầu hoàn: bản nháp, chưa gửi' : 'Chưa gửi yêu cầu nào'}</span></div>`;
   if(S.hold) h += `<div class="ln"><span class="pill p-auto">Đang giữ ${S.hold.seats} chỗ ${F[S.hold.f].code}</span><span>còn <span class="timer" id="left">${mmss(S.hold.left)}</span></span><button class="undo" data-a="release">Bỏ giữ chỗ</button></div>`;
-  if(S.handoff) h += `<div class="ln"><span class="pill p-auto">Đã chuyển nhân viên</span><span>dự kiến nhận trong khoảng 5 phút</span></div>`;
+  if(S.handoff) h += `<div class="ln"><span class="pill p-auto">Đã chuyển nhân viên</span><span>chưa xác nhận tiếp nhận</span></div>`;
   h += `<div class="cap">Dòng này lấy từ kết quả tool trả về, không lấy từ lời trợ lý.</div>`;
   $('#status').innerHTML = h;
 }
@@ -306,7 +306,7 @@ async function handoff(need, lead){
   log('chuyen_nhan_vien', 'auto', `Chuyển cuộc trò chuyện kèm tóm tắt: ${need}.`);
   const sum = summary(need);
   $('#staffSum').innerHTML = sum; $('#staffCard').style.display = 'block';
-  await addAI(`<p>${lead}</p><p>Mình đã chuyển cuộc trò chuyện cho nhân viên kèm tóm tắt dưới đây, bạn không phải kể lại. Nhân viên sẽ nhận trong khoảng 5 phút.${S.hold ? ` ${S.hold.seats} chỗ ${F[S.hold.f].code} vẫn đang được giữ.` : ''}</p>
+  await addAI(`<p>${lead}</p><p>Mình đã chuyển cuộc trò chuyện cho nhân viên kèm tóm tắt dưới đây, bạn không phải kể lại. Hồ sơ đã gửi; chưa xác nhận nhân viên tiếp nhận.${S.hold ? ` ${S.hold.seats} chỗ ${F[S.hold.f].code} vẫn đang được giữ.` : ''}</p>
     <div class="sum" data-n="6">${sum}</div>` + choices(btn('Quay lại trợ lý', 'backFromStaff', '', 'safe')));
 }
 const lockedMsg = () => S.refund === 'sent'
@@ -361,7 +361,7 @@ function confirmOpen(k){
       <tr><td>Hành khách được đổi</td><td><b>Nguyễn Minh An</b><br><b>Nguyễn Gia Bình</b> (5 tuổi)</td></tr>
       <tr><td>Phí</td><td>0 đ · dùng lần đổi miễn phí duy nhất</td></tr>
     </table>
-    <div class="warn">Đổi rồi thì không đổi lại được trong ứng dụng.</div>
+    <div class="warn">Đổi rồi sẽ dùng lần miễn phí duy nhất; khó đảo lại.</div>
     <div class="src">Nội dung trên lấy từ lệnh sẽ gửi: <code>doi_chuyen_bay(TRV-7Q2K → ${f.code}, 2 hành khách)</code>, không lấy từ lời trợ lý.</div>
     <div class="acts">
       <button class="btn pri" data-a="confirmDo" data-v="${k}">Xác nhận đổi cho 2 người</button>
@@ -395,7 +395,7 @@ async function refundReply(intent){
   if(!fly.length){
     log('soan_yeu_cau_hoan', 'auto', 'Soạn bản nháp hoàn cả mã TRV-7Q2K (2 vé). Chưa gửi.');
     return addAI(`<p>Mình hiểu là: hoàn cả 2 vé. Mình đã soạn sẵn yêu cầu, chưa gửi gì cả.</p>` + card +
-      `<p>Gửi rồi thì không huỷ được. Tiền về phương thức thanh toán ban đầu, có thể mất tới 90 ngày. Bạn xem lại rồi tự bấm gửi nhé.</p>
+      `<p>Gửi rồi thì không huỷ được. Phương thức nhận và thời gian hoàn chưa được xác minh cho vé này. Bạn xem lại rồi tự bấm gửi nhé.</p>
        <div class="warn">Hoàn vé: gửi rồi không huỷ được.</div>` +
       choices(btn('Xem lại và gửi yêu cầu hoàn 2 vé', 'refundOpen', '', 'appr', 'pri'), btn('Xoá bản nháp', 'later', '', 'safe'),
         btn('Tôi muốn đổi chuyến thay vì hoàn', 'list', '', 'safe')));
@@ -405,8 +405,8 @@ async function refundReply(intent){
   const lone = fly[0].id === 'binh';
   await addAI(`<p>Mình hiểu là: hoàn vé của ${ref[0].short}, còn ${fly[0].short} vẫn bay. Mình chưa gửi yêu cầu nào. Có hai điều bạn cần biết trước:</p>` + card +
     `<ol><li>Yêu cầu hoàn trong chat này áp dụng cho cả mã TRV-7Q2K, tức cả 2 vé. Mình không tách riêng một vé được, nên mình sẽ không gửi.</li>
-     <li>Yêu cầu hoàn gửi rồi thì không huỷ được. Tiền về phương thức thanh toán ban đầu, có thể mất tới 90 ngày.</li></ol>
-     <p>Nhân viên tách được từng vé. Mình chuyển bạn sang nhân viên kèm tóm tắt này nhé? ${lone
+     <li>Yêu cầu hoàn gửi rồi thì không huỷ được. Phương thức nhận và thời gian hoàn chưa được xác minh cho vé này.</li></ol>
+     <p>Nhân viên sẽ kiểm tra khả năng xử lý riêng từng vé. Mình chuyển bạn sang nhân viên kèm tóm tắt này nhé? ${lone
         ? 'Bé Bình 5 tuổi bay một mình cũng là việc cần nhân viên sắp xếp.'
         : 'Chuyến BM 213 đã huỷ nên vé của bạn cũng cần đổi; trong lúc chờ mình có thể giữ 1 chỗ cho bạn trên chuyến bạn chọn.'}</p>
      <div class="warn">Hoàn vé: gửi rồi không huỷ được.</div>` +
@@ -435,7 +435,7 @@ function refundOpen(){
     <table>
       <tr><td>Hoàn</td><td><b>2 vé</b>: Nguyễn Minh An, Nguyễn Gia Bình</td></tr>
       <tr><td>Đặt chỗ</td><td>TRV-7Q2K · BM 213 (đã huỷ)</td></tr>
-      <tr><td>Tiền về</td><td>Phương thức thanh toán ban đầu, có thể mất tới 90 ngày</td></tr>
+      <tr><td>Tiền về</td><td>Chưa xác minh phương thức nhận và thời gian hoàn</td></tr>
       <tr><td>Sau khi gửi</td><td>Mất quyền đổi chuyến miễn phí; chỗ đang giữ được nhả</td></tr>
     </table>
     <div class="warn">Yêu cầu hoàn gửi rồi thì không huỷ được.</div>
@@ -452,7 +452,7 @@ async function refundDo(){
   dropHold('đã gửi yêu cầu hoàn');
   S.refund = 'sent';
   log('gui_yeu_cau_hoan_ve', 'done', 'Đã gửi yêu cầu hoàn cả mã TRV-7Q2K (2 vé). Không huỷ được.');
-  await addAI(`<p>Đã gửi yêu cầu hoàn 2 vé lúc ${clock()}. Yêu cầu này không huỷ được. Tiền về phương thức thanh toán ban đầu, có thể mất tới 90 ngày.</p>` +
+  await addAI(`<p>Đã gửi yêu cầu hoàn 2 vé lúc ${clock()}. Yêu cầu này không huỷ được. Phương thức nhận và thời gian hoàn chưa được xác minh cho vé này.</p>` +
     choices(btn('Tôi gửi nhầm, gặp nhân viên', 'staff', 'Khách báo gửi nhầm yêu cầu hoàn', 'staff', '', 6)));
 }
 
