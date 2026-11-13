@@ -4,27 +4,35 @@
 
 | Họ và Tên        | Mã Học Viên | Việc đã làm                                                                                                        |
 | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
-| PHẠM QUANG TUẤN  | 2A202603824 | Xây dựng phương án riêng CP1–CP6 trên branch phamquangtuan; đối chiếu CP2–CP3 của các branch; tổng hợp bài nộp trên main; tích hợp backend OpenProvider, bảo vệ key, chạy hai ca AI thật K5/K9 và lưu log/kết quả; chuẩn bị repo và cấu trúc file nộp |
-| Nguyễn Trọng Lâm | 2A202603817 | Xây dựng đặc tả T3 trên branch NguyenTrongLam; lập bảng 10 kịch bản và chọn K5/K9; thiết kế câu trả lời, đường sửa/chuyển người, ánh xạ HAX và mức tự chủ; xây dựng prototype HTML và ảnh minh hoạ làm nền cho bài chính |
-| Vũ Xuân Hiếu     | 2A202603860 | Xây dựng đặc tả, prototype tương tác và phần kiểm thử an toàn trên branch vuhieu; phân tích ca thiếu chỗ/hoàn vé, duyệt bằng modal và checkbox, đổi chuyến đang giữ, hết hạn giữ chỗ và đóng modal không thực thi; cung cấp phương án đối chiếu cho luật an toàn bài chung |
+| PHẠM QUANG TUẤN | 2A202603824 | Tích hợp backend OpenProvider và giao diện AI thật; bảo vệ API key, chạy thử và lưu log minh chứng; tổng hợp đặc tả, quản lý Git và chuẩn bị file nộp |
+| Nguyễn Trọng Lâm | 2A202603817 | Phân tích kịch bản rủi ro và lựa chọn K5/K9; thiết kế câu trả lời khi AI sai, đường sửa/chuyển người và HAX/PAIR; xây dựng prototype và hai ảnh minh hoạ |
+| Vũ Xuân Hiếu | 2A202603860 | Thiết kế mức tự chủ, bước duyệt và luật an toàn; xây dựng tiêu chí Pass/Fail, rà soát luồng giữ chỗ/hết hạn/hoàn vé; kiểm tra tính nhất quán và chuẩn bị ca lạ |
 
-### Phân công phụ trách và rà soát bản nộp
+Cả ba cùng rà soát lát cắt, phạm vi tính năng, hai kịch bản chính và giới hạn của AI; kiểm tra chéo đặc tả, prototype và minh chứng trước khi nộp. Mỗi người trình bày và giải thích phần việc mình phụ trách trong demo.
 
-Bảng trên ghi đóng góp có trong repo; bảng dưới phân công trách nhiệm kiểm tra và giải thích bản cuối. Phần được giao rà soát không đồng nghĩa đã có xác nhận kiểm tra thực tế của thành viên đó. Cả ba cùng chịu trách nhiệm hiểu lát cắt, hai ca đắt nhất và giới hạn của AI.
+### Bảng phân công chi tiết
 
-| Hạng mục | Phụ trách chính | Người rà soát | Đầu ra / nội dung cần bảo vệ |
+| Công việc | Phụ trách chính | Phối hợp / rà soát | Đầu ra cần hoàn thiện |
 |---|---|---|---|
-| **CP1 — Lát cắt và phạm vi** | Lâm | Tuấn | §1, đúng hành khách/công việc/quyết định/kết quả; ba việc không làm khớp prototype |
-| **CP2 — Kịch bản và lựa chọn K5/K9** | Lâm | Hiếu | §2, đủ bốn lớp; từng lỗi trỏ tool/dữ liệu; giải thích vì sao chọn và vì sao loại các ca suýt chọn |
-| **CP3 — UX khi sai, câu chữ và HAX** | Lâm | Hiếu | §3, câu AI khớp UI; G10/G11/G9 có vị trí trên ảnh; phân biệt hỏi lại, dừng và chuyển người |
-| **CP4 — Mức tự chủ và giới hạn thực thi** | Hiếu | Tuấn, Lâm | §4, quyền của từng tool, ai duyệt/thấy gì/quá hạn; điều kiện đủ chỗ và phạm vi hoàn; tổng hợp các quan điểm từ branch |
-| **CP5 — Prototype và hai ảnh** | Lâm | Hiếu | index.html, ảnh K5/K9; đi hết luồng chọn/giữ/duyệt, sửa phạm vi, nhả chỗ và chuyển người; không có trạng thái thành công giả |
-| **CP6 — Tiêu chí Pass/Fail và lỗi còn lại** | Hiếu | Tuấn | §6, đối chiếu tiêu chí trên K5/K9; phân biệt đánh giá thiết kế với kiểm thử đã chạy, ghi giới hạn chưa giải quyết |
-| **Bonus AI thật** | Tuấn | Hiếu | server.mjs, ai.js, log và kết quả hai ca HTTP 200; giải thích AI chỉ chọn tool, ứng dụng vẫn kiểm soát quyền, không lộ key |
-| **Tổng hợp, Git và nộp bài** | Tuấn | Lâm | Đồng bộ spec/UI/ảnh, đủ thành viên/bàn L, repo public, file cần nộp và .gitignore; không đưa lịch sử repo đề hoặc key vào bài |
-| **Demo và ca lạ** | Cả ba theo lịch §7 | Kiểm tra chéo | Mỗi người trình bày một phần; nhận ca lạ, chỉ ra quyết định theo mức tự chủ và cập nhật kết quả thực tế sau demo |
+| Xác định người dùng, lát cắt và phạm vi tính năng | Lâm | Tuấn, Hiếu | Mô tả bài toán, dữ liệu đặt chỗ và ba việc tính năng không làm |
+| Xây dựng bảng kịch bản rủi ro | Lâm | Hiếu | Kịch bản phủ đủ bốn lớp; mỗi lỗi có căn cứ từ tool hoặc fixture, cách xử lý và mức hại |
+| Lựa chọn hai ca K5/K9 và lập luận đánh đổi | Lâm | Tuấn, Hiếu | Lý do chọn hai ca đắt nhất, so sánh với ca suýt chọn và hậu quả khi AI làm sai |
+| Viết câu trả lời khi AI sai và đường xử lý tiếp theo | Lâm | Hiếu | Câu AI nguyên văn, trạng thái khách thấy, thao tác sửa/chuyển người và thông tin gửi hỗ trợ |
+| Thiết kế mức tự chủ và điều kiện duyệt | Hiếu | Tuấn, Lâm | Mức của từng tool, người duyệt, nội dung cần xem, cách xử lý quá hạn và giới hạn quyền thực thi |
+| Thiết kế luật an toàn cho hành khách và giao dịch | Hiếu | Lâm | Chặn thiếu chỗ/tách trẻ, không tự đổi theo câu chat, không hoàn quá phạm vi, không hứa hoàn tác vé |
+| Xây dựng giao diện và tương tác prototype | Lâm | Tuấn | Luồng K5/K9, chọn chuyến, giữ/nhả chỗ, xác nhận đổi, sửa phạm vi và chuyển nhân viên |
+| Tích hợp backend và lời gọi AI thật | Tuấn | Hiếu | Kết nối OpenProvider, kiểm tra đầu ra chọn tool, xử lý lỗi và giữ quyền duyệt ở ứng dụng |
+| Bảo vệ API key và cấu hình chạy | Tuấn | Hiếu | Key chỉ ở backend, .env bị ignore, .env.example và hướng dẫn chạy không chứa bí mật |
+| Thiết kế tiêu chí Pass/Fail và rà soát an toàn | Hiếu | Tuấn, Lâm | Ba tiêu chí rõ ràng, đối chiếu K5/K9, rà soát giữ chỗ hết hạn, đóng modal và trạng thái chưa gửi |
+| Chạy thử AI và lưu bằng chứng bonus | Tuấn | Hiếu | Log phản hồi thật, model/response ID, kết quả hai ca K5/K9 và kiểm tra log không chứa key |
+| Chuẩn bị ảnh đánh số và ánh xạ HAX/PAIR | Lâm | Hiếu | Hai ảnh K5/K9; mỗi nguyên tắc có vị trí cụ thể, câu chữ trên ảnh khớp prototype |
+| Tổng hợp lỗi còn lại và giới hạn sản phẩm | Hiếu | Tuấn | Phân biệt thao tác mô phỏng với AI thật, dữ liệu chưa xác minh, việc cần nhân viên và phạm vi kiểm thử |
+| Đồng bộ tài liệu và chuẩn bị repo nộp | Tuấn | Lâm, Hiếu | spec.md khớp UI/ảnh/log; đủ thành viên và bàn L; repo công khai, cấu trúc gọn, không lộ key |
+| Chuẩn bị demo, ca lạ và kiểm tra chéo | Cả ba theo §7 | Cả ba | Mỗi người giải thích phần mình phụ trách, phối hợp xử lý ca lạ và ghi kết quả thực tế sau buổi demo |
 
-**Phương án chốt:** chọn cặp K5/K9, lập luận và luồng prototype liên quan của Nguyễn Trọng Lâm (commit 561063d); đã biên tập cho cấu trúc nộp bài, không merge branch gốc. Ghép riêng tích hợp AI thật của Tuấn vào main để đọc tin khách và chọn tool; giao dịch vé vẫn giả lập. Log kiểm tra mới của main tách biệt với bằng chứng cũ trên branch phamquangtuan.
+Bảng phân công xác định trách nhiệm trên sản phẩm cuối; kết quả đã chạy được đối chiếu bằng ảnh/log và tài liệu kiểm tra. Các nhiệm vụ rà soát hoặc demo được giao không tự được coi là bằng chứng đã thực hiện.
+
+**Phương án chốt:** dùng K5 (thiếu chỗ cho hai hành khách) và K9 (chỉ hoàn vé bé) làm hai ca chính. Prototype thể hiện các bước tra cứu, giữ chỗ, duyệt và chuyển người; phần AI thật đọc tin khách và chọn tool, còn giao dịch vé vẫn giả lập.
 
 **Giả định mô phỏng cần phân biệt với dữ liệu đề:** phạm vi hoàn cả mã trong prototype là cấu hình dựng để thử lỗi hoàn quá tay, không phải kết luận API thật chỉ hỗ trợ cả mã. Khi chưa xác minh được hoàn từng hành khách, K9 dừng và chuyển người kiểm tra; không hứa nhân viên chắc chắn tách được vé. Luồng hoàn cả mã chỉ mô phỏng bước duyệt, không kết nối hãng. Phương thức nhận, thời gian hoàn và SLA nhân viên chưa có trong fixture. Phần bonus trên main chỉ dựa vào log gọi AI mới của tích hợp hiện tại, không dựa vào giao dịch vé mô phỏng.
 
@@ -311,13 +319,13 @@ Mức nào cũng có giá:
 | Khách duyệt                  | K8 (không còn chạy theo tin nhắn) | K9 vẫn lọt nếu màn xác nhận không ghi rõ là hoàn cả 2 vé                                          |
 | Nhân viên duyệt mọi ca       | K9, K8                            | Như "cấm": K11 chờ vô ích                                                                         |
 
-**Quan điểm cá nhân tổng hợp từ bài làm độc lập trên từng branch.**
+**Các quan điểm cá nhân về thiết kế:** tổng hợp các phương án trong bài làm để giải thích lựa chọn chung, không phải trích dẫn nguyên văn hoặc biên bản họp.
 
-| Thành viên / nguồn                                          | Lựa chọn trong phương án riêng                                                                         | Lý do và cái giá chấp nhận                                                                                                                                                                                                       | Điểm được đưa vào phương án chốt                                                                                                           |
+| Thành viên                                          | Quan điểm về mức tự chủ                                                                         | Lý do và cái giá chấp nhận                                                                                                                                                                                                       | Điểm được đưa vào phương án chốt                                                                                                           |
 | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| **PHẠM QUANG TUẤN — 2A202603824**, branch `phamquangtuan`   | **Cấm AI gửi hoàn**, chuyển người xác minh; đổi vé cần khách duyệt rõ                                  | Tool hoàn không rút được; fixture thiếu phương thức/thời gian nhận tiền. Một nút đồng ý không bổ sung được thông tin còn thiếu. Chấp nhận khách chờ hỗ trợ để tránh gửi sai ở ca S4 của branch riêng, tương ứng rủi ro hoàn ở K9 | Giữ nguyên tắc thiếu dữ liệu/phạm vi thì chưa gửi, không tự nhận thời hạn hoàn; lưu log AI thật và phân biệt đề xuất với giao dịch đã chạy |
-| **Nguyễn Trọng Lâm — 2A202603817**, branch `NguyenTrongLam` | **Tách soạn nháp khỏi gửi**; hoàn cả mã cần khách duyệt, hoàn một phần không tự gửi                    | K9 cho thấy khách nói rõ nhưng công cụ có thể không hỗ trợ đúng phạm vi. Cấm mọi ca khiến khách hoàn cả hai vé phải chờ; tự gửi có thể hoàn quá tay. Chấp nhận thêm bước duyệt và giao việc không xác minh được cho người        | Chọn cặp K5/K9, thẻ ai hoàn/ai bay có sửa, bản duyệt theo tham số thao tác, giữ chỗ có hoàn tác và đường chuyển người                      |
-| **Vũ Xuân Hiếu — 2A202603860**, branch `vuhieu`             | **Cần khách duyệt hoàn bằng modal riêng**, tick checkbox rồi mới bấm gửi; không thực thi theo câu chat | Ca K7 của branch riêng cho thấy lời nóng giận không đủ làm uỷ quyền giao dịch. Chấp nhận thêm thao tác kiểm tra, đổi lại tránh AI tự gửi chỉ vì nhận được yêu cầu bộc phát                                                       | Giữ rào cản duyệt riêng, tên cả hai hành khách, nút gửi bị khoá khi chưa tick và đóng modal không gửi; kiểm tra hết hạn giữ chỗ trước đổi  |
+| **PHẠM QUANG TUẤN — 2A202603824**   | **Cấm AI gửi hoàn**, chuyển người xác minh; đổi vé cần khách duyệt rõ                                  | Tool hoàn không rút được; fixture thiếu phương thức/thời gian nhận tiền. Một nút đồng ý không bổ sung được thông tin còn thiếu. Chấp nhận khách chờ hỗ trợ để tránh gửi sai ở yêu cầu hoàn chưa rõ, tương ứng rủi ro ở K9 | Giữ nguyên tắc thiếu dữ liệu/phạm vi thì chưa gửi, không tự nhận thời hạn hoàn; lưu log AI thật và phân biệt đề xuất với giao dịch đã chạy |
+| **Nguyễn Trọng Lâm — 2A202603817** | **Tách soạn nháp khỏi gửi**; hoàn cả mã cần khách duyệt, hoàn một phần không tự gửi                    | K9 cho thấy khách nói rõ nhưng công cụ có thể không hỗ trợ đúng phạm vi. Cấm mọi ca khiến khách hoàn cả hai vé phải chờ; tự gửi có thể hoàn quá tay. Chấp nhận thêm bước duyệt và giao việc không xác minh được cho người        | Chọn cặp K5/K9, thẻ ai hoàn/ai bay có sửa, bản duyệt theo tham số thao tác, giữ chỗ có hoàn tác và đường chuyển người                      |
+| **Vũ Xuân Hiếu — 2A202603860**             | **Cần khách duyệt hoàn bằng modal riêng**, tick checkbox rồi mới bấm gửi; không thực thi theo câu chat | Yêu cầu hoàn trong lúc khách nóng giận cho thấy lời nóng giận không đủ làm uỷ quyền giao dịch. Chấp nhận thêm thao tác kiểm tra, đổi lại tránh AI tự gửi chỉ vì nhận được yêu cầu bộc phát                                                       | Giữ rào cản duyệt riêng, tên cả hai hành khách, nút gửi bị khoá khi chưa tick và đóng modal không gửi; kiểm tra hết hạn giữ chỗ trước đổi  |
 
 **Khác biệt cần giải quyết:** Tuấn ưu tiên dừng khi thiếu điều kiện; Lâm chia theo phạm vi hoàn; Hiếu ưu tiên bước duyệt chủ động. Ba hướng đều không cho AI gửi hoàn chỉ từ câu chat, nhưng khác nhau ở việc khi nào được mở bước gửi. Checkbox chỉ chứng minh hành động duyệt, không tự xác minh điều kiện hoàn hoặc tạo quyền hoàn tác.
 
@@ -337,13 +345,13 @@ Mức nào cũng có giá:
 
 ### Tổng hợp đóng góp trong lựa chọn CP2–CP3
 
-| Thành viên | Cách ưu tiên trong branch riêng                                                                           | Kết quả được chọn cho bài chung                                                                                                    |
+| Thành viên | Góc nhìn thiết kế                                                                           | Kết quả được chọn cho bài chung                                                                                                    |
 | ---------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | Tuấn       | Chọn đổi nhầm đã ghi và hoàn chưa rõ; ưu tiên nhận lỗi, dừng ghi tiếp, không hứa khôi phục                | Giữ ca đổi nhầm K10 để kiểm tra phục hồi; bổ sung phân biệt đã gửi hồ sơ với nhân viên đã tiếp nhận và giới hạn bằng chứng AI thật |
 | Lâm        | Chọn thiếu chỗ K5 và hoàn riêng bé K9; một ca cần làm rõ/giữ chỗ, một ca cần dừng/chuyển người            | Chọn làm hai ca chính vì hai đường xử lý thể hiện được đánh đổi giữa tốc độ và giới hạn công cụ                                    |
 | Hiếu       | Chọn thiếu chỗ K3 và hoàn khi nóng giận K7; ưu tiên bảo vệ đoàn có trẻ, duyệt chủ động và hết hạn giữ chỗ | Giữ điều kiện đủ chỗ, không tách trẻ, đóng modal không thực thi và khoá thao tác khi giữ chỗ hết hạn                               |
 
-**Lập luận sau đối chiếu:** ưu tiên K5/K9 để tránh hai ca chính đều chỉ chuyển người; vẫn giữ bài toán phục hồi của Tuấn và rào cản thao tác của Hiếu. Đây là tổng hợp phương án trong repo, không thay cho việc từng thành viên giải thích phần của mình khi demo.
+**Lập luận sau đối chiếu:** ưu tiên K5/K9 để tránh hai ca chính đều chỉ chuyển người; vẫn giữ bài toán phục hồi của Tuấn và rào cản thao tác của Hiếu. Đây là tổng hợp các phương án thiết kế, không thay cho việc từng thành viên giải thích phần của mình khi demo.
 
 ### Luật thêm
 
@@ -497,15 +505,15 @@ bị huỷ chuyến không mở cài đặt.
 
 | Thành viên | Thời lượng | Việc nói và thao tác trực tiếp |
 |---|---|---|
-| **Tuấn** | 60 giây | 30 giây đầu giới thiệu lát cắt, hai hành khách và chuyến huỷ; sau đó chỉ log AI thật K5/K9, model/response ID và giới hạn không thực hiện giao dịch hãng. Giải thích key ở backend, .env không lên Git |
-| **Lâm** | 90 giây | Nêu vì sao chọn K5/K9, chạy K5: 1 chỗ không đủ 2 người → giữ chuyến phù hợp → xem bản duyệt; chỉ thẻ căn cứ G11, làm rõ G10, nhả giữ chỗ G9. Giải thích giữ chỗ không phải đổi vé |
-| **Hiếu** | 90 giây | Chạy K9: chỉ hoàn bé → sửa thẻ phạm vi → chưa gửi → chuyển người. Giải thích cost-of-error của hoàn không rút được, bước duyệt và điều kiện còn thiếu; nêu ba tiêu chí CP6 và hạn chế còn lại |
+| **Tuấn** | 60 giây | Giới thiệu lát cắt và dữ liệu; trình bày tích hợp AI thật, model/response ID, log minh chứng và cách bảo vệ key; làm rõ giao dịch hãng vẫn giả lập |
+| **Lâm** | 90 giây | Giải thích lựa chọn K5/K9; chạy ca K5 từ thiếu chỗ đến giữ chỗ và xem bản duyệt; chỉ căn cứ G11, làm rõ G10 và nhả giữ chỗ G9 |
+| **Hiếu** | 90 giây | Chạy ca K9 từ yêu cầu hoàn riêng bé đến sửa phạm vi và chuyển người; giải thích mức tự chủ, điều kiện duyệt, tiêu chí Pass/Fail và lỗi còn lại |
 
 ### Phối hợp khi nhận ca lạ
 
-- **Lâm:** đọc lại yêu cầu, xác định dữ liệu nào đã có/chưa có và lỗi gần kịch bản nào ở CP2.
+- **Lâm:** đọc lại yêu cầu, xác định dữ liệu đã có/chưa có và liên hệ kịch bản rủi ro.
 - **Hiếu:** xác định tool, mức tự chủ và điều kiện chặn/duyệt/chuyển người; nêu ai chịu thiệt nếu quyết định sai.
-- **Tuấn:** thao tác prototype phù hợp, chỉ trạng thái/log; ghi nguyên văn ca lạ, kết quả quan sát và quyết định cần sửa sau demo.
+- **Tuấn:** thao tác prototype, chỉ trạng thái/log; ghi lại ca lạ, kết quả và thay đổi cần thiết sau demo.
 
 Đây là lịch phân công, không phải xác nhận đã trình bày. Mỗi người cần tự giải thích được phần có tên mình; không dùng người khác hoặc lời gọi AI thay phần trả lời của mình.
 
