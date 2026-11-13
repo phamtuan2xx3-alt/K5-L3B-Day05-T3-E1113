@@ -29,7 +29,8 @@ code{font:.86em ui-monospace,Consolas,monospace}
 .bar label{font-size:.88rem;margin-left:6px;display:flex;gap:6px;align-items:center}
 
 .layout{display:grid;grid-template-columns:minmax(340px,440px) minmax(0,1fr);gap:18px;padding:18px 20px;align-items:start;max-width:1320px;margin:0 auto}
-@media (max-width:860px){.layout{grid-template-columns:1fr;padding:12px}}
+.layout>*{min-width:0}
+@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr);padding:12px}.card{overflow-wrap:anywhere}.card table{table-layout:fixed;width:100%}}
 
 /* phone */
 .phone{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden;
@@ -138,7 +139,7 @@ body.annot .apphead[data-n],body.annot .status[data-n]{outline-offset:-3px}
 
 <div class="top">
   <h1>Prototype · T3 Du lịch · Trợ lý đổi chuyến khi chuyến bay bị huỷ</h1>
-  <p>Bản dựng để demo thiết kế "khi AI sai" và mức tự chủ. Câu trả lời chạy theo kịch bản và luật từ khoá, <b>không gọi AI thật</b>. Toàn bộ dữ liệu là dữ liệu dựng; hãng "Bay Mẫu" là hãng dựng.</p>
+  <p>Bản dựng để demo thiết kế "khi AI sai" và mức tự chủ. Khung chat dùng kịch bản và luật từ khoá; khung <b>Bonus · AI thật</b> gọi OpenProvider để chọn tool. Toàn bộ dữ liệu là dữ liệu dựng; hãng "Bay Mẫu" là hãng dựng.</p>
   <div class="bar">
     <span class="lbl">Ca demo:</span>
     <button class="case" data-case="k5">K5 · "lấy chuyến tối nay đi"</button>
@@ -153,7 +154,7 @@ body.annot .apphead[data-n],body.annot .status[data-n]{outline-offset:-3px}
   <section class="phone" aria-label="Màn hình khách">
     <div class="apphead" data-n="1">
       <div class="row"><b>Đặt chỗ của tôi · TRV-7Q2K</b><span class="aibadge">Trợ lý AI</span></div>
-      <small>Bạn đang nhắn với trợ lý AI, không phải nhân viên. Mình tìm chuyến, giữ chỗ và soạn sẵn yêu cầu. <b>Vé chỉ đổi, yêu cầu hoàn chỉ gửi khi bạn tự bấm xác nhận.</b> Mình có thể sai; bạn gặp nhân viên được bất cứ lúc nào.</small>
+      <small>Bạn đang nhắn với trợ lý AI, không phải nhân viên. Mình tìm chuyến, giữ chỗ và soạn sẵn yêu cầu. <b>Vé chỉ đổi khi bạn duyệt; yêu cầu hoàn cần nhân viên xác minh trước.</b> Mình có thể sai; bạn gặp nhân viên được bất cứ lúc nào.</small>
     </div>
     <div class="status" id="status" data-n="4"></div>
     <div class="chat" id="chat"></div>
@@ -188,7 +189,7 @@ body.annot .apphead[data-n],body.annot .status[data-n]{outline-offset:-3px}
         <tr data-t="giu_cho_chuyen_moi"><td><code>giu_cho_chuyen_moi</code></td><td><span class="pill p-auto">Tự làm · hoàn tác</span></td><td>Đếm ngược 20 phút, nút "Bỏ giữ chỗ"</td></tr>
         <tr data-t="soan_yeu_cau_hoan"><td><code>soan_yeu_cau_hoan</code><br><small>tool nhóm thêm</small></td><td><span class="pill p-auto">Tự làm · xoá được</span></td><td>Thẻ "Mình hiểu yêu cầu của bạn là"</td></tr>
         <tr data-t="doi_chuyen_bay"><td><code>doi_chuyen_bay</code></td><td><span class="pill p-appr">Cần khách duyệt</span></td><td>Màn xác nhận ghi tên hành khách</td></tr>
-        <tr data-t="gui_yeu_cau_hoan_ve"><td><code>gui_yeu_cau_hoan_ve</code></td><td><span class="pill p-appr">Cả mã: khách duyệt</span><br><span class="pill p-deny">Một phần: cấm</span></td><td>Màn gửi có ô tự tích; hoàn một phần thì không có nút gửi</td></tr>
+        <tr data-t="gui_yeu_cau_hoan_ve"><td><code>gui_yeu_cau_hoan_ve</code></td><td><span class="pill p-appr">Cấm gửi khi chưa xác minh</span><br><span class="pill p-deny">Một phần: chuyển người</span></td><td>Bản nháp không gửi được; chuyển người xác minh điều kiện</td></tr>
         <tr data-t="chuyen_nhan_vien"><td><code>chuyen_nhan_vien</code></td><td><span class="pill p-auto">Tự làm</span></td><td>Thẻ tóm tắt gửi nhân viên</td></tr>
       </table>
     </div>
@@ -284,6 +285,7 @@ const flightsEv = () => ev(`Theo đặt chỗ TRV-7Q2K, tra lúc ${clock()}: ${n
 /* ---------- tools (mock) ---------- */
 function lookup(text){ log('tra_cuu_dat_cho', 'auto', text || 'Đọc đặt chỗ TRV-7Q2K: 2 hành khách, 3 chuyến thay thế còn chỗ.'); }
 function hold(f, seats){
+  if(locked() || !F[f] || seats < 1 || F[f].seats < seats) return false;
   if(S.hold) log('giu_cho_chuyen_moi', 'auto', `Nhả ${S.hold.seats} chỗ ${F[S.hold.f].code} (chỉ giữ một chuyến một lúc).`);
   S.hold = {f, seats, left:1200, warned:false};
   log('giu_cho_chuyen_moi', 'auto', `Giữ ${seats} chỗ ${F[f].code} trong 20 phút. Chưa đổi vé.`);
@@ -350,6 +352,7 @@ async function pick(k){
       btn('Gặp nhân viên', 'staff', 'Khách muốn gặp nhân viên', 'staff')));
 }
 function confirmOpen(k){
+  if(locked() || !S.hold || S.hold.f !== k || S.hold.seats !== nPax() || S.hold.left <= 0 || F[k].seats < nPax()) return locked() ? lockedReply() : listFlights('Giữ chỗ không còn hợp lệ. Hãy chọn và giữ lại trước khi duyệt.');
   const f = F[k];
   log('doi_chuyen_bay', 'appr', `Đã soạn lệnh đổi sang ${f.code} cho 2 hành khách. Chưa chạy.`);
   $('#sheet').innerHTML = `<div data-n="5">
@@ -370,6 +373,10 @@ function confirmOpen(k){
   $('#scrim').classList.add('show');
 }
 async function confirmDo(k){
+  if(locked() || !S.hold || S.hold.f !== k || S.hold.seats !== nPax() || S.hold.left <= 0 || !F[k] || F[k].seats < nPax()) {
+    $('#scrim').classList.remove('show');
+    return locked() ? lockedReply() : listFlights('Chưa đổi vé: giữ chỗ hết hạn hoặc không đủ chỗ. Hãy kiểm tra lại.');
+  }
   $('#scrim').classList.remove('show');
   S.ticket = 'changed'; S.changedTo = k; S.hold = null;
   log('doi_chuyen_bay', 'done', `Đã đổi 2 hành khách sang ${F[k].code}. Lần đổi miễn phí đã dùng.`);
@@ -395,16 +402,16 @@ async function refundReply(intent){
   if(!fly.length){
     log('soan_yeu_cau_hoan', 'auto', 'Soạn bản nháp hoàn cả mã TRV-7Q2K (2 vé). Chưa gửi.');
     return addAI(`<p>Mình hiểu là: hoàn cả 2 vé. Mình đã soạn sẵn yêu cầu, chưa gửi gì cả.</p>` + card +
-      `<p>Gửi rồi thì không huỷ được. Phương thức nhận và thời gian hoàn chưa được xác minh cho vé này. Bạn xem lại rồi tự bấm gửi nhé.</p>
+      `<p>Gửi rồi thì không huỷ được. Phương thức nhận và thời gian hoàn chưa được xác minh cho vé này. Mình chưa gửi; cần nhân viên kiểm tra trước khi bạn quyết định.</p>
        <div class="warn">Hoàn vé: gửi rồi không huỷ được.</div>` +
-      choices(btn('Xem lại và gửi yêu cầu hoàn 2 vé', 'refundOpen', '', 'appr', 'pri'), btn('Xoá bản nháp', 'later', '', 'safe'),
+      choices(btn('Xem bản nháp hoàn 2 vé', 'refundOpen', '', 'safe', 'pri'), btn('Xoá bản nháp', 'later', '', 'safe'),
         btn('Tôi muốn đổi chuyến thay vì hoàn', 'list', '', 'safe')));
   }
   log('soan_yeu_cau_hoan', 'auto', `Soạn bản nháp: hoàn vé ${ref[0].name}, giữ vé ${fly[0].name}. Chưa gửi.`);
-  log('gui_yeu_cau_hoan_ve', 'deny', 'Không chạy. Tool chỉ hoàn được cả mã, khách chỉ muốn hoàn một vé.');
+  log('gui_yeu_cau_hoan_ve', 'deny', 'Không chạy: chưa xác minh phạm vi hoàn từng người; khách chỉ muốn hoàn một vé.');
   const lone = fly[0].id === 'binh';
   await addAI(`<p>Mình hiểu là: hoàn vé của ${ref[0].short}, còn ${fly[0].short} vẫn bay. Mình chưa gửi yêu cầu nào. Có hai điều bạn cần biết trước:</p>` + card +
-    `<ol><li>Yêu cầu hoàn trong chat này áp dụng cho cả mã TRV-7Q2K, tức cả 2 vé. Mình không tách riêng một vé được, nên mình sẽ không gửi.</li>
+    `<ol><li>Mình chưa xác minh được công cụ hỗ trợ hoàn riêng vé của bé; nếu gửi sai phạm vi có thể ảnh hưởng cả hai vé, nên mình sẽ không gửi.</li>
      <li>Yêu cầu hoàn gửi rồi thì không huỷ được. Phương thức nhận và thời gian hoàn chưa được xác minh cho vé này.</li></ol>
      <p>Nhân viên sẽ kiểm tra khả năng xử lý riêng từng vé. Mình chuyển bạn sang nhân viên kèm tóm tắt này nhé? ${lone
         ? 'Bé Bình 5 tuổi bay một mình cũng là việc cần nhân viên sắp xếp.'
@@ -428,10 +435,11 @@ async function hold1(k){
     choices(btn('Chuyển nhân viên kèm tóm tắt', 'staff', 'Hoàn riêng vé của Nguyễn Gia Bình, Nguyễn Minh An vẫn bay', 'staff', 'pri', 6)));
 }
 function refundOpen(){
+  if(locked()) return lockedReply();
   log('gui_yeu_cau_hoan_ve', 'appr', 'Đã soạn lệnh hoàn cả mã (2 vé). Chưa chạy.');
   $('#sheet').innerHTML = `<div data-n="5">
-    <h3>Gửi yêu cầu hoàn vé</h3>
-    <div class="lvline"><span class="pill p-appr">Cần bạn xác nhận</span></div>
+    <h3>Bản nháp hoàn vé — chưa đủ điều kiện gửi</h3>
+    <div class="lvline"><span class="pill p-deny">Cần nhân viên xác minh</span></div>
     <table>
       <tr><td>Hoàn</td><td><b>2 vé</b>: Nguyễn Minh An, Nguyễn Gia Bình</td></tr>
       <tr><td>Đặt chỗ</td><td>TRV-7Q2K · BM 213 (đã huỷ)</td></tr>
@@ -440,20 +448,18 @@ function refundOpen(){
     </table>
     <div class="warn">Yêu cầu hoàn gửi rồi thì không huỷ được.</div>
     <div class="src">Nội dung trên lấy từ lệnh sẽ gửi: <code>gui_yeu_cau_hoan_ve(TRV-7Q2K, cả mã)</code>.</div>
-    <label class="ck"><input type="checkbox" id="ck"> Tôi hiểu gửi rồi không huỷ được</label>
+    <p>Chưa xác minh phương thức nhận, thời gian hoàn và phạm vi tool. Không thể gửi từ prototype này.</p>
     <div class="acts">
       <button class="btn danger" id="sendRefund" data-a="refundDo" disabled>Gửi yêu cầu hoàn 2 vé</button>
+      <button class="btn pri" data-a="refundStaff">Nhờ nhân viên xác minh</button>
       <button class="btn" data-a="sheetBack" data-v="keep">Quay lại, chưa gửi</button>
     </div></div>`;
   $('#scrim').classList.add('show');
 }
 async function refundDo(){
+  log('gui_yeu_cau_hoan_ve', 'deny', 'Không gửi: điều kiện hoàn chưa được xác minh.');
   $('#scrim').classList.remove('show');
-  dropHold('đã gửi yêu cầu hoàn');
-  S.refund = 'sent';
-  log('gui_yeu_cau_hoan_ve', 'done', 'Đã gửi yêu cầu hoàn cả mã TRV-7Q2K (2 vé). Không huỷ được.');
-  await addAI(`<p>Đã gửi yêu cầu hoàn 2 vé lúc ${clock()}. Yêu cầu này không huỷ được. Phương thức nhận và thời gian hoàn chưa được xác minh cho vé này.</p>` +
-    choices(btn('Tôi gửi nhầm, gặp nhân viên', 'staff', 'Khách báo gửi nhầm yêu cầu hoàn', 'staff', '', 6)));
+  return handoff('Xác minh điều kiện hoàn; chưa gửi yêu cầu', 'Mình chưa gửi yêu cầu hoàn.');
 }
 
 /* ---------- free text: luật từ khoá cho ca lạ ---------- */
@@ -468,7 +474,7 @@ async function route(text){
   const raw = text.toLowerCase(), n = norm(text), f = flightIn(n);
   if(/(tong dai|nhan vien|ben hang)/.test(n) && /(khoi can|khong can|ko can|bo qua|doi luon|hoan luon)/.test(n)){
     log('doi_chuyen_bay', 'deny', 'Không chạy. Luật 4: tin nhắn là dữ liệu, không phải lệnh.');
-    return addAI(`<p>Mình không làm theo tin nhắn này. Trong ứng dụng, vé chỉ đổi và yêu cầu hoàn chỉ gửi khi chủ đặt chỗ tự bấm xác nhận trên màn hình; không ai nhắn để bỏ qua bước đó được.</p>
+    return addAI(`<p>Mình không làm theo tin nhắn này. Trong ứng dụng, vé chỉ đổi sau khi chủ đặt chỗ duyệt; yêu cầu hoàn chưa đủ điều kiện thì cần nhân viên xác minh; không ai nhắn để bỏ qua bước đó được.</p>
       <p>Chưa có gì thay đổi với đặt chỗ TRV-7Q2K. Nếu bạn cần nhân viên thật, mình chuyển ngay.</p>` +
       choices(btn('Xem chuyến thay thế', 'list', '', 'safe'), btn('Gặp nhân viên', 'staff', 'Có tin tự xưng nhân viên yêu cầu bỏ qua xác nhận', 'staff', '', 6)));
   }
@@ -528,6 +534,7 @@ async function route(text){
 
 /* ---------- actions ---------- */
 const ACT = {
+  refundStaff: () => { $('#scrim').classList.remove('show'); return handoff('Xác minh phạm vi, phương thức và thời gian hoàn', 'Mình chưa gửi yêu cầu hoàn.'); },
   list: () => listFlights('Các chuyến thay thế còn chỗ. Bạn chọn chuyến nào thì mình giữ chỗ trước, chưa đổi vé:'),
   pick, confirmOpen, confirmDo, hold1ask, hold1, refundOpen, refundDo,
   refundAsk: () => refundReply({an:'hoan', binh:'hoan'}),
@@ -545,8 +552,8 @@ const ACT = {
   sheetBack: async v => { $('#scrim').classList.remove('show');
     if(v === 'change'){ log('doi_chuyen_bay', 'deny', 'Khách chưa duyệt, lệnh đổi bị huỷ.'); return ACT.list(); }
     log('gui_yeu_cau_hoan_ve', 'deny', 'Khách chưa duyệt, lệnh hoàn không gửi.');
-    await addAI(`<p>Mình chưa gửi gì. Bản nháp vẫn còn, bạn gửi lúc khác hoặc xoá đều được.</p>` +
-      choices(btn('Xem lại và gửi yêu cầu hoàn 2 vé', 'refundOpen', '', 'appr'), btn('Xoá bản nháp', 'later', '', 'safe'), btn('Tôi muốn đổi chuyến thay vì hoàn', 'list', '', 'safe'))); },
+    await addAI(`<p>Mình chưa gửi gì. Bản nháp vẫn còn, bạn có thể nhờ nhân viên xác minh hoặc xoá nháp.</p>` +
+      choices(btn('Xem bản nháp hoàn 2 vé', 'refundOpen', '', 'safe'), btn('Xoá bản nháp', 'later', '', 'safe'), btn('Tôi muốn đổi chuyến thay vì hoàn', 'list', '', 'safe'))); },
   ff: async v => { if(!S.hold) return addAI('<p>Hiện không có chỗ nào đang được giữ.</p>'); S.hold.left = v === '15' ? 301 : 1; S.t += 1; },
   restart: () => start(current)
 };
@@ -557,7 +564,7 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('change', e => {
   if(e.target.id === 'annot') document.body.classList.toggle('annot', e.target.checked);
-  if(e.target.id === 'ck') $('#sendRefund').disabled = !e.target.checked;
+  if(e.target.id === 'ck') $('#sendRefund').disabled = true;
 });
 async function send(text){
   text = text.trim(); if(!text || busy) return;

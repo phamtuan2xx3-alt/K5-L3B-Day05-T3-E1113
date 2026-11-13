@@ -1,0 +1,74 @@
+{
+  "tested_at": "2026-11-13T05:31:25.626Z",
+  "method": "Playwright browser UI and state assertions; fixture mutations only for expiry and seat-loss edge cases; no real booking operations",
+  "results": [
+    {
+      "id": "K5_blocks_insufficient_seats",
+      "pass": true
+    },
+    {
+      "id": "Review_both_passengers_and_fee",
+      "pass": true
+    },
+    {
+      "id": "Cancel_review_no_change",
+      "pass": true
+    },
+    {
+      "id": "Switch_single_hold",
+      "pass": true
+    },
+    {
+      "id": "Undo_hold",
+      "pass": true
+    },
+    {
+      "id": "Expired_hold_blocks_commit",
+      "pass": true
+    },
+    {
+      "id": "Seat_loss_blocks_commit",
+      "pass": true
+    },
+    {
+      "id": "Approved_change_once",
+      "pass": true
+    },
+    {
+      "id": "Duplicate_commit_blocked",
+      "pass": true
+    },
+    {
+      "id": "K9_draft_unknown_terms_no_refund",
+      "pass": true
+    },
+    {
+      "id": "Correct_refund_scope",
+      "pass": true
+    },
+    {
+      "id": "K9_handoff_context_unconfirmed_receipt",
+      "pass": true
+    },
+    {
+      "id": "Whole_refund_disabled_missing_terms",
+      "pass": true
+    },
+    {
+      "id": "Close_refund_no_send",
+      "pass": true
+    },
+    {
+      "id": "Direct_refund_action_blocked",
+      "pass": true
+    },
+    {
+      "id": "Auto_expiry_preserves_ticket",
+      "pass": true
+    },
+    {
+      "id": "Mobile_no_horizontal_overflow",
+      "pass": true
+    }
+  ]
+}

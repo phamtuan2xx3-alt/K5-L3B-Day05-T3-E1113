@@ -12,6 +12,8 @@
 !/prototype/README.md
 !/prototype/ai-evidence.jsonl
 !/prototype/bonus-test-results.json
+!/prototype/ui-test-results.json
+!/prototype/verification.md
 **/.env
 **/.env.*
 !/.env.example

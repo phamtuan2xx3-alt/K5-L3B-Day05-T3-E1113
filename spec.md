@@ -32,7 +32,7 @@ Cả ba cùng rà soát lát cắt, phạm vi tính năng, hai kịch bản chí
 
 **Phương án chốt:** dùng K5 (thiếu chỗ cho hai hành khách) và K9 (chỉ hoàn vé bé) làm hai ca chính. Prototype thể hiện các bước tra cứu, giữ chỗ, duyệt và chuyển người; phần AI thật đọc tin khách và chọn tool, còn giao dịch vé vẫn giả lập.
 
-**Giả định mô phỏng cần phân biệt với dữ liệu đề:** phạm vi hoàn cả mã trong prototype là cấu hình dựng để thử lỗi hoàn quá tay, không phải kết luận API thật chỉ hỗ trợ cả mã. Khi chưa xác minh được hoàn từng hành khách, K9 dừng và chuyển người kiểm tra; không hứa nhân viên chắc chắn tách được vé. Luồng hoàn cả mã chỉ mô phỏng bước duyệt, không kết nối hãng. Phương thức nhận, thời gian hoàn và SLA nhân viên chưa có trong fixture. Phần bonus trên main chỉ dựa vào log gọi AI mới của tích hợp hiện tại, không dựa vào giao dịch vé mô phỏng.
+**Phạm vi mô phỏng:** giao dịch vé và hồ sơ hỗ trợ chỉ là trạng thái dựng. Phạm vi hoàn từng hành khách, phương thức nhận, thời gian hoàn và SLA nhân viên chưa có trong fixture; UI và backend không gửi hoàn khi chưa xác minh. Bonus dựa trên log AI thật chọn tool, không phải giao dịch hãng.
 
 ## §1. Lát cắt & phạm vi
 
@@ -162,10 +162,8 @@ huống (2 người, 1 chỗ). Khách nói năng bình thường, không phải 
 > Mình hiểu là: hoàn vé của bé Bình, còn bạn An vẫn bay. Mình chưa gửi yêu cầu
 > nào. Có hai điều bạn cần biết trước:
 >
-> 1. Yêu cầu hoàn trong chat này áp dụng cho cả mã TRV-7Q2K, tức cả 2 vé. Mình
->    không tách riêng vé của bé được, nên mình sẽ không gửi.
-> 2. Yêu cầu hoàn gửi rồi thì không huỷ được. Tiền về phương thức thanh toán
->    ban đầu, có thể mất tới 90 ngày.
+> 1. Mình chưa xác minh được công cụ hỗ trợ hoàn riêng vé của bé; nếu gửi sai phạm vi có thể ảnh hưởng cả hai vé, nên mình sẽ không gửi.
+> 2. Yêu cầu hoàn gửi rồi thì không huỷ được. Phương thức nhận và thời gian hoàn chưa được xác minh cho vé này.
 >
 > Nhân viên sẽ kiểm tra khả năng xử lý riêng từng vé. Mình chuyển bạn sang nhân viên kèm tóm tắt này
 > nhé? Chuyến BM 213 đã huỷ nên vé của bạn cũng cần đổi; trong lúc chờ mình có
@@ -201,10 +199,10 @@ huống (2 người, 1 chỗ). Khách nói năng bình thường, không phải 
   (c) cảnh báo rồi vẫn cho khách tự bấm gửi cả mã, (d) dừng, nói giới hạn,
   chuyển nhân viên.
 - Chọn (d).
-- Loại (a): `gui_yeu_cau_hoan_ve` không đảo được và không tách hành khách, nên
+- Loại (a): `gui_yeu_cau_hoan_ve` không đảo được và chưa xác minh khả năng hoàn đúng từng hành khách, nên
   vé của An mất theo.
 - Loại (b): ở đây không thiếu thông tin, khách nói rất rõ. Hỏi "chắc chứ?" chỉ
-  dẫn tới câu "chắc", rồi tool vẫn hoàn cả mã.
+  dẫn tới câu "chắc", nhưng vẫn chưa xác minh được phạm vi tool.
 - Loại (c): người đang vội không đọc cảnh báo; chữ không chặn được một thao tác
   không rút lại được.
 - Cái giá của (d): khách phải chờ nhân viên. Nhóm bù bằng việc giữ chỗ trong lúc
@@ -213,7 +211,7 @@ huống (2 người, 1 chỗ). Khách nói năng bình thường, không phải 
 **Loại lỗi: lỗi hệ thống.** Nếu AI gửi hoàn cả mã thì đó là hệ thống làm vượt
 phạm vi khách yêu cầu, vì tool không đủ mịn.
 
-- Cách nói: nhận về phía mình ("mình không tách được"), không đẩy sang khách
+- Cách nói: nhận về phía mình ("mình chưa xác minh được phạm vi"), không đẩy sang khách
   ("bạn cần nói rõ hơn").
 - Cách sửa: khi phạm vi khách yêu cầu khác phạm vi tool làm được thì không có
   nút gửi trong chat. Ở §4 nhóm đề xuất tách "soạn yêu cầu hoàn" khỏi "gửi".
@@ -254,7 +252,7 @@ Thiết kế cứu bằng hai điều:
 | ---------------------- | ------------------------------------ | ------------------------------------------------ |
 | Happy path             | "đổi cả hai sang chuyến 7h sáng mai" | Màn xác nhận ghi 2 tên → khách bấm → đổi         |
 | Low-confidence         | K5                                   | Nêu giới hạn, giữ chỗ, hỏi một câu có nút        |
-| Failure / không căn cứ | K9                                   | Nói không tách được, không gửi, chuyển nhân viên |
+| Failure / không căn cứ | K9                                   | Nói chưa xác minh được phạm vi, không gửi, chuyển nhân viên |
 | Correction             | Khách bấm "Sửa" hoặc "Bỏ giữ chỗ"    | Đổi lại trước khi có thao tác khó đảo            |
 
 ## §4. Mức tự chủ
@@ -315,7 +313,7 @@ Mức nào cũng có giá:
 | Tự làm                       | Không chặn gì                     | K9: hoàn cả mã khi khách chỉ muốn hoàn vé của bé, không rút lại được                              |
 | Cấm, mọi ca chuyển nhân viên | K9, K8                            | K11: khách nói rõ muốn hoàn cả hai vé vẫn phải chờ nhân viên, đúng ngày bão khi hàng chờ dài nhất |
 | Khách duyệt                  | K8 (không còn chạy theo tin nhắn) | K9 vẫn lọt nếu màn xác nhận không ghi rõ là hoàn cả 2 vé                                          |
-| Nhân viên duyệt mọi ca       | K9, K8                            | Như "cấm": K11 chờ vô ích                                                                         |
+| Nhân viên duyệt mọi ca       | K9, K8                            | K11 vẫn phải chờ; chỉ là chờ thừa nếu các điều kiện đã được xác minh đầy đủ. Fixture hiện tại chưa đủ điều kiện.                                                                         |
 
 **Các quan điểm cá nhân về thiết kế:** tổng hợp các phương án trong bài làm để giải thích lựa chọn chung, không phải trích dẫn nguyên văn hoặc biên bản họp.
 
@@ -327,20 +325,14 @@ Mức nào cũng có giá:
 
 **Khác biệt cần giải quyết:** Tuấn ưu tiên dừng khi thiếu điều kiện; Lâm chia theo phạm vi hoàn; Hiếu ưu tiên bước duyệt chủ động. Ba hướng đều không cho AI gửi hoàn chỉ từ câu chat, nhưng khác nhau ở việc khi nào được mở bước gửi. Checkbox chỉ chứng minh hành động duyệt, không tự xác minh điều kiện hoàn hoặc tạo quyền hoàn tác.
 
-**Nhóm chốt: tách thành hai bước, và chia theo phạm vi hoàn.**
+**Nhóm chốt: tách soạn nháp khỏi gửi; chưa xác minh điều kiện thì cấm gửi.**
 
-- Thêm tool `soan_yeu_cau_hoan` · TỰ LÀM. AI soạn bản nháp: hoàn cho ai, mấy vé,
-  tiền về đâu, mất bao lâu. Nháp không gửi đi đâu, xoá được, nên sai thì rẻ.
-- `gui_yeu_cau_hoan_ve` cho **cả mã đặt chỗ** · CẦN KHÁCH DUYỆT.
-  - Người duyệt thấy: "Hoàn 2 vé: Nguyễn Minh An, Nguyễn Gia Bình", tiền về
-    phương thức nhận và thời gian hoàn đã được nhân viên xác minh trong kịch bản dựng, và một ô phải tự tích
-    "Tôi hiểu gửi rồi không huỷ được".
-  - Quá hạn: nháp nằm yên, không gửi, quyền hoàn còn nguyên.
-- `gui_yeu_cau_hoan_ve` cho **một phần hành khách** · CẤM với AI. Tool không tách
-  được từng vé, nên AI chỉ soạn nháp rồi `chuyen_nhan_vien`.
-- **Vì sao chốt vậy:** lấy cách tách nháp/gửi và kiểm soát phạm vi của Lâm để K9 không bị biến thành hoàn hai vé; lấy rào cản duyệt riêng của Hiếu cho ca hoàn cả hai; bổ sung điều kiện của Tuấn: trước một yêu cầu thật phải xác minh phương thức, thời gian hoàn và phạm vi tool. Khi chưa đủ điều kiện thì chuyển người, dù khách đã tick. Như vậy tránh cả hai cực: tự gửi theo chat gây thiệt hại không đảo được, hoặc bắt mọi thao tác soạn nháp/tra cứu đều chờ người.
-- **Giới hạn của quyết định:** luồng gửi hoàn cả mã trong HTML chỉ minh hoạ duyệt bằng dữ liệu dựng, không chứng minh đã đủ điều kiện gửi thật. Backend AI hiện chỉ đề xuất và đưa yêu cầu hoàn sang người; không có giao dịch hoàn thật. Việc “cần khách duyệt” ở mô phỏng không được coi là quyền gửi API hãng đang hoạt động.
-
+- `soan_yeu_cau_hoan` · **TỰ LÀM**: ghi ai hoàn, ai còn bay và thông tin còn thiếu; nháp không gửi đi, có thể sửa/xoá.
+- `gui_yeu_cau_hoan_ve` · **CẤM thực thi trong prototype hiện tại**, cho cả hoàn một phần và cả hai người: fixture chưa xác minh phạm vi tool, phương thức nhận và thời gian hoàn. Màn bản nháp luôn khoá nút gửi, có nút nhờ nhân viên kiểm tra; không có checkbox nào cấp quyền bỏ qua dữ liệu thiếu.
+- Nếu phát triển thật và đã xác minh đủ điều kiện, bước gửi vẫn cần khách duyệt bản ghi rõ hành khách, phương thức/thời gian nhận và tính không thể rút. Đây là thiết kế tương lai, chưa có trong prototype.
+- Chưa được nhân viên tiếp nhận thì bản nháp nằm yên, không gửi/không tự đổi sau thời hạn chờ. Không đặt SLA không có căn cứ.
+- **Vì sao chốt:** giữ cách tách nháp/gửi và thẻ phạm vi của Lâm, giữ bước duyệt rõ của Hiếu cho giao dịch khó đảo; áp dụng điều kiện dừng của Tuấn khi chưa đủ dữ liệu. Chi phí là khách chờ xác minh, nhưng một nút duyệt không giải quyết được thông tin thiếu hoặc lỗi hoàn quá tay. Tra cứu, giữ chỗ và sửa nháp vẫn tự phục vụ để tránh chờ mọi việc.
+- Quyết định này thay phương án cho gửi hoàn cả mã sau một checkbox: phương án đó bị loại vì không bảo đảm khách được biết điều kiện hoàn. Backend AI và UI thống nhất chỉ đề xuất/chuyển người, không có giao dịch hoàn thật.
 ### Tổng hợp đóng góp trong lựa chọn CP2–CP3
 
 | Thành viên | Góc nhìn thiết kế                                                                           | Kết quả được chọn cho bài chung                                                                                                    |
@@ -371,13 +363,12 @@ không mơ hồ.
 
 |                                            | K5 "lấy chuyến tối nay đi"                                                           | K9 "hoàn vé cho bé thôi"                                                               | K11 "hoàn hết 2 vé"                                               |
 | ------------------------------------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Với mức này AI làm gì                      | Không đổi được (luật 1). Tự giữ 2 chỗ BM 201, hỏi một câu có nút                     | Tự soạn nháp, không gửi được (hoàn một phần là cấm), chuyển nhân viên                  | Tự soạn nháp cho cả mã, mở màn duyệt, khách tích ô và bấm thì gửi |
+| Với mức này AI làm gì                      | Không đổi được (luật 1). Tự giữ 2 chỗ BM 201, hỏi một câu có nút                     | Tự soạn nháp, không gửi được (hoàn một phần là cấm), chuyển nhân viên                  | Tự soạn nháp cho cả mã; khoá gửi, chuyển nhân viên xác minh |
 | Cái sai ở §2 có bị chặn không              | Có: không thể đổi cho một người                                                      | Có: không có đường nào gửi hoàn cả mã                                                  | Không có cái sai nào cần chặn                                     |
 | Còn việc nào làm khi lẽ ra phải hỏi        | Có một việc: giữ chỗ BM 201 khi khách chưa yêu cầu. Chấp nhận vì tự nhả và có nút bỏ | Không                                                                                  | Không                                                             |
-| Người dùng bình thường có chờ vô ích không | Không                                                                                | Có chờ nhân viên kiểm tra khả năng tách vé; chưa có SLA. Bù bằng giữ chỗ trong lúc chờ | Không chờ ai, chỉ thêm một ô tích                                 |
+| Người dùng bình thường có chờ vô ích không | Không                                                                                | Có chờ nhân viên kiểm tra khả năng tách vé; chưa có SLA. Bù bằng giữ chỗ trong lúc chờ | Chờ xác minh là cần thiết vì thiếu điều kiện hoàn, không phải vì AI không hiểu ý định                                 |
 
-**Lỗi còn lại sau khi thử:** ở K11, khách vẫn có thể tích ô và bấm gửi mà không
-đọc. Một bước duyệt làm chậm tay, không bảo đảm khách hiểu.
+**Lỗi còn lại sau khi thử:** K11 cần chờ nhân viên xác minh, chưa có SLA. UI không thể tự giải quyết việc thiếu dữ liệu hãng; không gửi thay để làm luồng có vẻ thành công.
 
 ### Một mức tự chủ đã đổi lời hứa nào
 
@@ -412,8 +403,7 @@ nút và dòng trạng thái "Chưa đổi vé" ở §3 đều phải nói theo 
 4. Bấm **"Chỉ một người bay tối nay"**: việc cấm, không có nút đổi, chỉ có đường
    sang nhân viên kèm thẻ tóm tắt.
 5. Chọn **K9**. Trợ lý soạn nháp, không có nút gửi hoàn, mời chuyển nhân viên.
-   Sửa thẻ thành cả hai "Hoàn vé" thì luồng chuyển sang K11: có tấm gửi với ô
-   phải tự tích.
+   Sửa thẻ thành cả hai "Hoàn vé" thì sang K11: xem nháp, nút gửi vẫn khoá vì chưa đủ điều kiện; có đường chuyển người.
 6. **Ca lạ:** gõ vào ô nhắn hoặc bấm một tin gợi ý phía trên ô nhắn. Tin không
    khớp luật nào thì trợ lý nói "chưa chắc hiểu", không làm gì, đưa ba việc nó
    làm được và đường sang nhân viên.
@@ -430,11 +420,11 @@ Bước xác nhận đổi K5 xem trực tiếp trên prototype: ghi rõ chuyế
 
 | Số  | Chỗ trên màn hình                                                                                              | Thể hiện gì                                                                                             | Nguyên tắc                        | Mức tự chủ                                                      |
 | --- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------- | --------------------------------------------------------------- |
-| ①   | Đầu khung chat: nhãn "Trợ lý AI" và câu "Vé chỉ đổi, yêu cầu hoàn chỉ gửi khi bạn tự bấm xác nhận"             | Khách biết đang nhắn với AI và AI làm được tới đâu; đây là lời hứa ở §4                                 | G1                                | Lời hứa của mức cần khách duyệt                                 |
+| ①   | Đầu khung chat: nhãn "Trợ lý AI" và câu "Vé chỉ đổi khi bạn duyệt; yêu cầu hoàn cần nhân viên xác minh trước"             | Khách biết đang nhắn với AI và AI làm được tới đâu; đây là lời hứa ở §4                                 | G1                                | Lời hứa của mức cần khách duyệt                                 |
 | ②   | Thẻ "Căn cứ" dưới câu trả lời                                                                                  | Trợ lý dựa vào dòng nào của đặt chỗ, tra lúc mấy giờ, để khách tự kiểm                                  | G11 · PAIR Explainability + Trust | `tra_cuu_dat_cho` · tự làm                                      |
 | ③   | Khối "Mình chắc / Chưa chắc" và ba nút lựa chọn                                                                | Độ chắc nói bằng lời: chắc chuyến nào, chưa chắc đổi cho ai. Thay vì đổi, trợ lý hỏi một câu có sẵn nút | G10                               | Chặn `doi_chuyen_bay` tự chạy                                   |
 | ④   | Dòng trạng thái ghim: "Chưa đổi vé", "Đang giữ 2 chỗ BM 201", đồng hồ đếm ngược, nút "Bỏ giữ chỗ"              | Việc trợ lý tự làm luôn nhìn thấy và hoàn tác được; nội dung lấy từ kết quả tool                        | G9                                | `giu_cho_chuyen_moi` · tự làm có hoàn tác                       |
-| ⑤   | Tấm xác nhận (xem trực tiếp trên prototype): chuyến mới, tên từng hành khách, "Đổi rồi thì không đổi lại được" | Người duyệt thấy đúng thứ sẽ chạy, lấy từ tham số lệnh chứ không từ lời trợ lý                          | (không gắn nguyên tắc)            | `doi_chuyen_bay`, `gui_yeu_cau_hoan_ve` cả mã · cần khách duyệt |
+| ⑤   | Tấm xác nhận (xem trực tiếp trên prototype): chuyến mới, tên từng hành khách, "Đổi rồi sẽ dùng lần miễn phí duy nhất; khó đảo lại" | Người duyệt thấy đúng thứ sẽ chạy, lấy từ tham số lệnh chứ không từ lời trợ lý                          | (không gắn nguyên tắc)            | `doi_chuyen_bay` cần khách duyệt; hoàn chưa đủ điều kiện thì bị chặn |
 | ⑥   | Nút "Chỉ một người bay tối nay" (ảnh 1) và ô gạch đứt "Ở đây không có nút Gửi yêu cầu hoàn" (ảnh 2)            | Việc cấm không có nút làm; chỉ có đường sang nhân viên kèm tóm tắt                                      | PAIR Errors + Graceful Failure    | Cấm · `chuyen_nhan_vien` tự làm                                 |
 | ⑦   | Thẻ "Mình hiểu yêu cầu của bạn là" (ảnh 2), mỗi hành khách một công tắc Vẫn bay / Hoàn vé                      | Khách sửa cách trợ lý hiểu trước khi có gì được gửi                                                     | G9                                | `soan_yeu_cau_hoan` · tự làm, xoá được                          |
 | ⑧   | Nhật ký tool (cột phải)                                                                                        | Lệnh nào đã chạy, lệnh nào chờ duyệt, lệnh nào bị chặn vì luật nào                                      | (công cụ trình bày)               | Cả ba mức                                                       |
@@ -491,11 +481,11 @@ bị huỷ chuyến không mở cài đặt.
 
 | Tiêu chí Pass/Fail                                                                                   | K5 — thiếu chỗ                                                      | K9 — hoàn riêng bé                                                                         |
 | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| P1: Không đổi hoặc gửi hoàn ngay theo câu chat; trước đổi phải hiện chuyến và tên người bay để duyệt | Pass theo thiết kế: chặn BM 217 thiếu chỗ, giữ BM 201 rồi xin duyệt | Pass theo thiết kế: chưa gửi hoàn, chuyển người kiểm tra phạm vi                           |
-| P2: Hiện căn cứ và giới hạn, không hứa thông tin chưa xác minh                                       | Pass theo thiết kế: 1 chỗ/2 người, giữ 20 phút chưa đổi             | Pass theo thiết kế: phạm vi tool là giả định dựng, phương thức/thời gian hoàn cần kiểm tra |
-| P3: Có đường sửa hoặc chuyển người mà không báo giao dịch đã hoàn thành                              | Pass theo thiết kế: bỏ giữ/chọn lại hoặc gặp nhân viên              | Pass theo thiết kế: sửa ai hoàn/ai bay; gửi tóm tắt cho người, chưa xác nhận tiếp nhận     |
+| P1: Không đổi hoặc gửi hoàn ngay theo câu chat; trước đổi phải hiện chuyến và tên người bay để duyệt | **Pass — đã kiểm tra:** chặn BM 217 thiếu chỗ, giữ BM 201 rồi xin duyệt | **Pass — đã kiểm tra:** chưa gửi hoàn, chuyển người kiểm tra phạm vi                           |
+| P2: Trước bước tiếp theo phải hiện số chỗ/số người ở K5 và thông tin hoàn còn thiếu ở K9; không có lời hứa thời hạn hoàn                                       | **Pass — đã kiểm tra:** 1 chỗ/2 người, giữ 20 phút chưa đổi             | **Pass — đã kiểm tra:** phạm vi tool là giả định dựng, phương thức/thời gian hoàn cần kiểm tra |
+| P3: Nhả giữ chỗ hoặc sửa phạm vi không đổi/hoàn vé; chuyển hỗ trợ hiện nội dung hồ sơ và chưa xác nhận tiếp nhận                              | **Pass — đã kiểm tra:** bỏ giữ/chọn lại hoặc gặp nhân viên              | **Pass — đã kiểm tra:** sửa ai hoàn/ai bay; gửi tóm tắt cho người, chưa xác nhận tiếp nhận     |
 
-Đánh giá trên là đối chiếu thiết kế, không phải xác nhận giao dịch thật. Giới hạn còn lại: số chỗ tĩnh; chưa có backend giao dịch, trạng thái nhân viên thật hoặc khả năng phục hồi vé đã đổi; tin tự do nhận theo từ khoá. Nếu gửi yêu cầu thật bị timeout, phải kiểm tra kết quả trước khi gửi lại, không khẳng định tự rollback.
+Đã chạy 17 kiểm tra Playwright trên bản cuối ngày 13/11/2026, gồm chặn thiếu chỗ, duyệt rõ, nhả/chuyển giữ chỗ, hết hạn, gửi lặp, sửa phạm vi và chuyển người. Báo cáo máy đọc: [ui-test-results.json](prototype/ui-test-results.json); ánh xạ theo rubric: [verification.md](prototype/verification.md). Kết quả kiểm tra giao diện mô phỏng không phải xác nhận giao dịch hãng thật. Giới hạn còn lại: số chỗ tĩnh; chưa có backend giao dịch, trạng thái nhân viên thật hoặc khả năng phục hồi vé đã đổi; tin tự do nhận theo từ khoá. Nếu gửi yêu cầu thật bị timeout, phải kiểm tra kết quả trước khi gửi lại, không khẳng định tự rollback.
 
 ## §7. Demo
 
