@@ -4,11 +4,11 @@
 
 | Họ và Tên | Mã Học Viên | Việc đã làm |
 |---|---|---|
-| PHẠM QUANG TUẤN | 2A202603824 | [Xác nhận việc thực tế; gợi ý phụ trách §1–2] |
-| [Thành viên 2] | [CẦN ĐIỀN] | [Xác nhận việc thực tế; gợi ý phụ trách §3–4] |
-| [Thành viên 3] | [CẦN ĐIỀN] | [Xác nhận việc thực tế; gợi ý phụ trách prototype, §5–7] |
+| PHẠM QUANG TUẤN | 2A202603824 | Tổng hợp đặc tả CP1–CP6 trên main; xây dựng prototype, tích hợp OpenProvider và lưu bằng chứng gọi AI thật; đối chiếu các branch và chuẩn bị repo nộp |
+| Nguyễn Trọng Lâm | 2A202603817 | Xây dựng đặc tả T3 trên branch NguyenTrongLam; phân tích K5 thiếu chỗ và K9 hoàn một phần; xây dựng prototype cùng ảnh chụp minh hoạ |
+| Vũ Xuân Hiếu | 2A202603860 | Thiết kế đặc tả, xây dựng nguyên mẫu tương tác và kiểm thử an toàn trên branch vuhieu; phân tích K3 thiếu chỗ, K7 hoàn vé và các tình huống giữ chỗ/hết hạn |
 
-> Bản thiết kế đề xuất để nhóm rà soát và giải thích khi demo. Chưa có thông tin thành viên, thảo luận nhóm hoặc ca lạ từ TA; không coi các phần chờ điền là đã hoàn tất. Toàn bộ dữ liệu hành khách, hãng bay và giao dịch là dữ liệu dựng từ track hoặc tự sinh.
+> Thông tin thành viên được đối chiếu từ các branch main, NguyenTrongLam và vuhieu; phần việc ghi theo nội dung đóng góp trong repo. Thảo luận ba vai và ca lạ tự dựng bên dưới là mô phỏng để diễn tập, không phải biên bản thảo luận hay kết quả demo thực tế với TA. Toàn bộ dữ liệu hành khách, hãng bay và giao dịch là dữ liệu dựng từ track hoặc tự sinh.
 
 ## §1. Lát cắt & phạm vi
 
@@ -249,9 +249,9 @@ Chọn ba tiêu chí trên vì chúng kiểm tra trực tiếp thiệt hại kh�
 
 Kịch bản tập dượt (khoảng 4 phút):
 
-1. Thành viên 1 (30 giây): lát cắt, hai người bay, chuyến huỷ do bão.
-2. Thành viên 2 (60 giây): ca mặc định S3; chỉ số 1, 2; giải thích không có hoàn tác vé, bấm gửi hồ sơ và chỉ trạng thái chưa tiếp nhận.
-3. Thành viên 3 (90 giây): chọn ca “khách nói đổi đi”, thử chưa chọn chuyến, chọn 07:00, giữ chỗ, nhả hold, chọn lại, tick duyệt và đổi; chỉ số 3, 4.
+1. PHẠM QUANG TUẤN (30 giây): lát cắt, hai người bay, chuyến huỷ do bão; giới thiệu tích hợp AI thật và log bonus.
+2. Nguyễn Trọng Lâm (60 giây): ca mặc định S3; chỉ số 1, 2; giải thích không có hoàn tác vé, bấm gửi hồ sơ và chỉ trạng thái chưa tiếp nhận.
+3. Vũ Xuân Hiếu (90 giây): chọn ca “khách nói đổi đi”, thử chưa chọn chuyến, chọn 07:00, giữ chỗ, nhả hold, chọn lại, tick duyệt và đổi; chỉ số 3, 4.
 4. Cả nhóm: ca hoàn → chưa gửi, thiếu thông tin → nhân viên. Ca lạ ngoài dữ liệu → dừng ghi, chuyển người; không giả rằng prototype hiểu ngôn ngữ tự do.
 
 ### Ca lạ tự dựng để diễn tập
@@ -268,4 +268,4 @@ Kịch bản tập dượt (khoảng 4 phút):
 
 **Phạm vi bằng chứng:** Ca trên do nhóm tự dựng theo đề và được diễn giải bằng luồng đã kiểm tra; không ghi là ca thực tế do TA/nhóm bạn đưa. Khi demo trên lớp có ca khác, bổ sung nguyên văn và kết quả quan sát để đáp ứng phần demo thực tế.
 
-Repo bài nộp riêng: **https://github.com/phamtuan2xx3-alt/K5-L3B-Day05-T3-E1113**. Bản xuất bản chỉ gồm `.gitignore`, `spec.md` và `prototype/`, khởi tạo lịch sử mới, không dùng lịch sử repo đề. Trước nộp vẫn cần điền đủ ba thành viên/mã học viên/việc thực tế và bổ sung kết quả demo trên lớp. Thảo luận và ca lạ tự dựng ở trên là nội dung diễn tập, không thay cho bằng chứng sự kiện thực tế.
+Repo bài nộp riêng: **https://github.com/phamtuan2xx3-alt/K5-L3B-Day05-T3-E1113**. Bản xuất bản gồm `.gitignore`, `.env.example`, `spec.md` và `prototype/`, khởi tạo lịch sử mới, không dùng lịch sử repo đề; không nộp `.env` chứa key. Trước nộp vẫn cần điền bàn/zone, rà soát phân công và bổ sung kết quả demo trên lớp. Thảo luận và ca lạ tự dựng ở trên là nội dung diễn tập, không thay cho bằng chứng sự kiện thực tế.
