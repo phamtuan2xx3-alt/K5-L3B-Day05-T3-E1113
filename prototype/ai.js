@@ -1,0 +1,9 @@
+const panel=document.createElement('div');panel.className='review';
+panel.innerHTML='<h3>AI thật · OpenProvider</h3><p>Chỉ nhập tin khách giả cho lab. AI chọn tool; đổi/hoàn vẫn chịu luật duyệt của ứng dụng.</p><form id="ai-form"><label for="ai-message">Tin khách (dữ liệu dựng)</label><textarea id="ai-message" maxlength="2000" required rows="3" style="display:block;width:100%;font:inherit;padding:10px">Ừ đổi đi, chuyến đó cũng được.</textarea><button class="primary" type="submit">Gọi AI chọn tool</button></form><div id="ai-result" role="status" aria-live="polite"></div>';
+document.querySelector('.section-title').after(panel);
+document.querySelector('#ai-form').onsubmit=async event=>{event.preventDefault();const button=event.target.querySelector('button');const result=document.querySelector('#ai-result');button.disabled=true;result.textContent='Đang gọi AI thật… Chưa thực hiện thao tác vé.';
+try{if(location.protocol==='file:')throw Error('Chạy bằng server: node --env-file=.env prototype/server.mjs rồi mở http://localhost:8055');
+const response=await fetch('/api/decide',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:document.querySelector('#ai-message').value})});const data=await response.json();if(!response.ok)throw Error(data.error||'Lời gọi thất bại');
+result.replaceChildren();const pre=document.createElement('pre');pre.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;font:inherit';pre.textContent=`Model: ${data.model}\nTool AI chọn: ${data.selected_tool}\nLý do: ${data.reason}\nAI trả lời: ${data.reply}\nKiểm soát ứng dụng: ${data.policy}\nLog: prototype/ai-evidence.jsonl`;
+const apply=document.createElement('button');apply.textContent='Mở bước xử lý theo quyền ứng dụng';apply.onclick=()=>{document.querySelector('#scenario').value=data.route;start();};result.append(pre,apply);
+}catch(error){result.textContent=error.message;}finally{button.disabled=false;}};

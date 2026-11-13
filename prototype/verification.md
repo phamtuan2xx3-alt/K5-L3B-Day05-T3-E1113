@@ -1,5 +1,11 @@
 # Kiểm tra cục bộ
 
+## Bonus AI thật — 13/11/2026
+
+Đã gọi OpenProvider từ backend với `gemini-3.8-flash-high`, HTTP 200, response ID `chatcmpl-884b090fc414464e95c7c37c`. Ca dựng: khách muốn đổi sáng mai cho An và Bình. AI chọn `tra_cuu_dat_cho`, chỉ ra còn hai chuyến 07:00/09:30 và yêu cầu chọn rõ trước khi giữ/đổi. Ứng dụng chỉ mở bước tiếp theo, không đổi vé hoặc gửi hoàn. Bằng chứng phản hồi thật: `ai-evidence.jsonl` (đã kiểm tra không chứa key).
+
+Gateway không trả function call hợp lệ ở lượt đầu; tích hợp dùng JSON chọn tool, kiểm tra tên và tham số ở backend. Tăng `max_tokens` lên 4096 giúp ca kiểm tra trả kết quả hoàn chỉnh. Không tính các lượt lỗi là thành công; kết quả một ca không chứng minh model đúng trên mọi trường hợp.
+
 Đã chạy trên trình duyệt bằng Playwright, ngày 13/11/2026:
 
 - Ca đổi nhầm → chuyển hỗ trợ, có mã hồ sơ và trạng thái chưa tiếp nhận.

@@ -174,7 +174,7 @@ Với hoàn vé, lời hứa là **“AI giúp bạn hiểu giới hạn và chu
 ## §5. Prototype  (chặng 5)
 
 - Mở [prototype/index.html](prototype/index.html) trực tiếp bằng trình duyệt. HTML/CSS/JavaScript thuần, chạy offline, không đăng nhập hay backend.
-- Toàn bộ AI, tool, hồ sơ hỗ trợ, chỗ trống, phí và xác nhận đổi là **mock theo luật cố định**. Không gọi model thật, không yêu cầu bonus lời gọi AI. Không hiểu tự do tin nhắn; ca lạ chọn trạng thái “Không có dữ liệu / ca lạ” và nhóm giải thích theo mức tự chủ.
+- **AI thật (tuỳ chọn):** chạy backend Node.js theo `prototype/README.md`, điền key server-side trong `.env`. AI OpenProvider đọc tin khách dựng và chọn tool bằng JSON có tên tool được kiểm tra; ứng dụng kiểm tra quyền rồi mở bước xử lý. Các giao dịch vé, hồ sơ hỗ trợ, chỗ trống và phí vẫn mock. Mặc định offline vẫn có các ca cố định. Đã chạy thành công ngày 13/11/2026; log tại `prototype/ai-evidence.jsonl` là bằng chứng đề nghị bonus +3.
 - Một màn hình thay đổi trạng thái, chọn 5 ca dựng; không sao chép prototype mẫu. Mặc định là S3, ca khó bắt buộc của T3.
 - [Ảnh 1 — đổi nhầm](prototype/01-doi-nham.png): số 1 = G11/căn cứ/chỉ đọc; số 2 = G10/dừng khi lỗi; nút gửi hồ sơ = phục hồi qua người; số 4 = G9/đường hỗ trợ luôn sẵn.
 - [Ảnh 2 — duyệt đổi](prototype/02-duyet-doi.png): số 1 = căn cứ G11; số 2 = G10/làm rõ; số 3 = G9/nhả giữ chỗ và cần duyệt đổi; số 4 = chuyển người.
@@ -241,7 +241,7 @@ Kết quả dựa trên các lượt bấm Playwright cục bộ đã thực hi�
 - **S4 chưa biết phương thức và thời hạn hoàn:** không suy ra từ mô tả sản phẩm tham khảo. Phải xác minh và cho khách xem trước khi quyết định tại quy trình nhân viên.
 - **Hỗ trợ chỉ là mock:** mã HS-001 và trạng thái gửi không kết nối hàng đợi thật; chưa có tiếp nhận hoặc SLA. Không cam kết thời gian xử lý.
 - **Chỗ trống là fixture tĩnh:** chưa có backend kiểm tra/ghi nguyên tử, chống gửi trùng hoặc xử lý thay đổi chỗ giữa lúc xem và duyệt. Muốn phát hành thật phải kiểm tra các tình huống đó bằng hệ thống thực.
-- **AI là luật cố định:** chưa đánh giá khả năng hiểu tin nhắn tự do, diễn đạt khác hoặc ca lạ thực tế; chọn trạng thái ngoài dữ liệu chỉ minh hoạ đường dừng/chuyển người.
+- **Chưa đánh giá model thật:** đã chạy OpenProvider chọn tool từ tin nhắn và lưu log thành công, nhưng chưa đánh giá độ đúng trên bộ ca rộng; các kiểm tra CP5/CP6 trước đó áp dụng luồng mock. Không suy ra độ đúng của model từ kết quả mock.
 
 Chọn ba tiêu chí trên vì chúng kiểm tra trực tiếp thiệt hại không đảo được, thông tin để quyết định và đường phục hồi ở S3/S4. Không dùng độ đẹp giao diện hay tốc độ trả lời làm điều kiện thay thế: trả lời nhanh vẫn không đạt nếu gửi hoàn nhầm hoặc hứa khôi phục vé sai.
 

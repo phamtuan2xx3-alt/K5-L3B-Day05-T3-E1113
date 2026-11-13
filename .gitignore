@@ -13,3 +13,11 @@
 !/prototype/verification.md
 !/prototype/01-doi-nham.png
 !/prototype/02-duyet-doi.png
+!/.env.example
+!/prototype/server.mjs
+!/prototype/ai.js
+# Never commit secrets. Review generated evidence before adding it manually.
+**/.env
+**/.env.*
+!/.env.example
+**/ai-evidence.jsonl
