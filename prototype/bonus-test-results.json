@@ -1,0 +1,33 @@
+{
+  "tested_at": "2026-11-13T04:38:02.581Z",
+  "scope": "Real AI selection only; all booking/refund operations remain mocked",
+  "results": [
+    {
+      "case": "K5",
+      "fixture_message": "Ừ lấy chuyến tối nay BM 217 cho cả An và bé Bình 5 tuổi đi.",
+      "http_status": 200,
+      "expected_tools": [
+        "tra_cuu_dat_cho",
+        "chuyen_nhan_vien"
+      ],
+      "selected_tool": "tra_cuu_dat_cho",
+      "response_id": "chatcmpl-d3e1773871af414680ec9eb0",
+      "pass": true,
+      "duration_ms": 27023,
+      "error": null
+    },
+    {
+      "case": "K9",
+      "fixture_message": "Hoàn vé cho bé Bình thôi, tôi vẫn bay. Chỉ hoàn riêng vé bé, không hoàn vé An.",
+      "http_status": 200,
+      "expected_tools": [
+        "chuyen_nhan_vien"
+      ],
+      "selected_tool": "chuyen_nhan_vien",
+      "response_id": "chatcmpl-2b7d4383015b44629a4ccae3",
+      "pass": true,
+      "duration_ms": 14400,
+      "error": null
+    }
+  ]
+}

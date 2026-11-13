@@ -7,5 +7,11 @@
 !/prototype/index.html
 !/prototype/anh-1-k5.png
 !/prototype/anh-3-k9.png
+!/prototype/server.mjs
+!/prototype/ai.js
+!/prototype/README.md
+!/prototype/ai-evidence.jsonl
+!/prototype/bonus-test-results.json
 **/.env
 **/.env.*
+!/.env.example

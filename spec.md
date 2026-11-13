@@ -8,10 +8,10 @@
 | Nguyễn Trọng Lâm | 2A202603817 | Xây dựng đặc tả và prototype K5/K9 được chọn làm phương án chính; chuẩn bị ảnh minh hoạ |
 | Vũ Xuân Hiếu | 2A202603860 | Xây dựng phương án đặc tả, nguyên mẫu tương tác và kiểm thử an toàn trên branch vuhieu |
 
-**Phương án chốt:** chọn cặp K5/K9, lập luận và luồng prototype liên quan của Nguyễn Trọng Lâm (commit 561063d); đã biên tập cho cấu trúc nộp bài, không merge branch gốc. Phương án AI thật của Tuấn được giữ riêng trên branch phamquangtuan; prototype main hiện là mô phỏng, không nhận bằng chứng AI thật của phương án khác làm kết quả của main.
+**Phương án chốt:** chọn cặp K5/K9, lập luận và luồng prototype liên quan của Nguyễn Trọng Lâm (commit 561063d); đã biên tập cho cấu trúc nộp bài, không merge branch gốc. Ghép riêng tích hợp AI thật của Tuấn vào main để đọc tin khách và chọn tool; giao dịch vé vẫn giả lập. Log kiểm tra mới của main tách biệt với bằng chứng cũ trên branch phamquangtuan.
 
 
-**Giả định mô phỏng cần phân biệt với dữ liệu đề:** phạm vi hoàn cả mã trong prototype là cấu hình dựng để thử lỗi hoàn quá tay, không phải kết luận API thật chỉ hỗ trợ cả mã. Khi chưa xác minh được hoàn từng hành khách, K9 dừng và chuyển người kiểm tra; không hứa nhân viên chắc chắn tách được vé. Luồng hoàn cả mã chỉ mô phỏng bước duyệt, không kết nối hãng. Phương thức nhận, thời gian hoàn và SLA nhân viên chưa có trong fixture. Không nhận bonus AI thật trên main; bản tích hợp đó ở branch phamquangtuan.
+**Giả định mô phỏng cần phân biệt với dữ liệu đề:** phạm vi hoàn cả mã trong prototype là cấu hình dựng để thử lỗi hoàn quá tay, không phải kết luận API thật chỉ hỗ trợ cả mã. Khi chưa xác minh được hoàn từng hành khách, K9 dừng và chuyển người kiểm tra; không hứa nhân viên chắc chắn tách được vé. Luồng hoàn cả mã chỉ mô phỏng bước duyệt, không kết nối hãng. Phương thức nhận, thời gian hoàn và SLA nhân viên chưa có trong fixture. Phần bonus trên main chỉ dựa vào log gọi AI mới của tích hợp hiện tại, không dựa vào giao dịch vé mô phỏng.
 
 ## §1. Lát cắt & phạm vi
 
@@ -358,10 +358,10 @@ nút và dòng trạng thái "Chưa đổi vé" ở §3 đều phải nói theo 
   không cần mạng, không cần đăng nhập.
 - **Công cụ:** một file HTML, CSS, JavaScript thuần, dựng bằng coding agent
   (Claude Code).
-- **Phần mock:** toàn bộ. Câu trả lời của trợ lý là kịch bản dựng sẵn cộng với
+- **Phần mock:** các ca chat và thao tác vé trong khung chính. Câu trả lời ở đó là kịch bản dựng sẵn cộng với
   luật từ khoá cho tin gõ tự do; sáu tool được giả lập trong trình duyệt; đồng hồ
   bắt đầu từ 15:00 ngày 12/11/2026; dữ liệu là đặt chỗ dựng TRV-7Q2K của track.
-- **Lời gọi AI thật:** không có.
+- **Lời gọi AI thật:** khung “Bonus · AI thật” gọi OpenProvider qua backend Node.js, model `gemini-3.8-flash-high`, đọc tin khách và chọn tool bằng JSON được kiểm tra. Nút tiếp tục đưa khách vào bước chọn/duyệt chuyến hoặc chuyển nhân viên; không thực thi đổi/hoàn tự động. Chạy theo [prototype/README.md](prototype/README.md), key chỉ ở `.env` bị ignore. Bằng chứng mới: [ai-evidence.jsonl](prototype/ai-evidence.jsonl), kết quả kiểm tra: [bonus-test-results.json](prototype/bonus-test-results.json). Hai ảnh phía dưới minh hoạ UX mô phỏng; log riêng chứng minh lời gọi thật.
 - **Phạm vi:** một màn hình khách (khung chat) và hai tấm xác nhận trượt lên. Cột
   bên phải (bảng mức tự chủ, nhật ký tool, thẻ nhân viên thấy gì, nút tua thời
   gian) là công cụ trình bày khi demo, không thuộc màn hình của khách.
