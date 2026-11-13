@@ -63,9 +63,38 @@ Các cách phân loại lỗi không nhất thiết mâu thuẫn: cùng yêu c�
 
 ## 5. Phương án kết hợp đề xuất
 
-1. **CP2:** giữ S3 đổi nhầm và S4 hoàn làm hai ca chính để khớp CP3–CP6/prototype hiện có. Bổ sung tình huống hoàn riêng bé của Lâm làm biến thể S4; làm rõ ca thiếu chỗ bằng lập luận K5/K3 của hai thành viên.
+1. **Phương án ít thay đổi:** giữ S3 đổi nhầm và S4 hoàn làm hai ca chính để khớp CP3–CP6/prototype hiện có. Bổ sung tình huống hoàn riêng bé của Lâm làm biến thể S4; làm rõ ca thiếu chỗ bằng lập luận K5/K3 của hai thành viên. Đây là phương án giữ tương thích, không phải đánh giá cặp kịch bản tốt nhất.
 2. **CP3:** dùng đường dừng ghi và chuyển người của main cho lỗi đã xảy ra; mượn thẻ “ai hoàn, ai bay” có nút sửa từ Lâm; mượn khả năng chuyển chuyến đang giữ và khoá hết hạn từ Hieu. Đây là đề xuất, chưa tự coi UI main đã có đủ các thành phần mượn.
 3. Giữ một chính sách hoàn nhất quán. Modal/checkbox hữu ích để duyệt khi **đã đủ dữ liệu và có quyền thực thi**, không thay thế được thông tin hoàn còn thiếu hoặc tạo quyền rollback.
 4. Không merge toàn bộ hai branch thành viên: danh sách file của chúng vẫn có tài liệu đề/prototype mẫu. Chỉ lấy nội dung hoặc file được chọn, rồi đồng bộ CP4–CP6 và ảnh.
 
 Nếu nhóm muốn chuyển hai ca chính sang “thiếu chỗ + hoàn”, cả hai branch thành viên đã có hướng hợp lý về phòng ngừa; cần bổ sung đường phục hồi đổi nhầm và sửa các giả định ở bảng trên. Báo cáo này không tự thay đổi lựa chọn chính hoặc ghi đè bài của thành viên.
+
+## 6. Đánh giá lựa chọn: ưu tiên cặp K5–K9 của Nguyễn Trọng Lâm
+
+**Nếu chọn theo chất lượng bài toán CP2–CP3, đề xuất chọn cặp của Nguyễn Trọng Lâm: K5 — thiếu chỗ cho hai người và K9 — chỉ hoàn vé bé.** Lựa chọn này khác phương án ít thay đổi ở §5: ưu tiên chiều sâu thiết kế thay vì giữ nguyên bài/prototype hiện tại.
+
+| Kịch bản | Vì sao ưu tiên | Quyết định UX cần thể hiện |
+|---|---|---|
+| **K5 — “Lấy chuyến tối nay” nhưng chỉ còn 1 chỗ cho 2 người** | Khách tưởng đã nói rõ; AI có thể chọn đúng chuyến nhưng sai hành khách. Căn cứ trực tiếp từ fixture: BM 217 còn 1 chỗ, đặt chỗ có An và Bình 5 tuổi. Thể hiện vì sao một câu xác nhận chưa đủ để cho phép đổi vé | Nêu giới hạn, đưa chuyến đủ hai chỗ, giữ chỗ có điều kiện và xin khách duyệt rõ chuyến/hành khách; không tự đổi lẻ |
+| **K9 — “Chỉ hoàn vé bé, tôi vẫn bay”** | Ý định khách đã rõ nhưng khả năng tool hỗ trợ đúng phạm vi chưa rõ. Hỏi lại “bạn chắc chứ?” không bổ sung được năng lực công cụ. Nguy cơ là hoàn quá phạm vi bằng một thao tác không thể rút | Hiện rõ ai hoàn/ai tiếp tục bay; chưa gửi hoàn, chuyển nhân viên xác minh khả năng xử lý riêng từng hành khách |
+
+### Vì sao chọn cặp này thay các cặp còn lại?
+
+- **So với main S3–S4:** main có ưu điểm bao phủ phục hồi sau lỗi đã ghi, nhưng cả hai ca chính đều dừng và chuyển nhân viên. K5–K9 thể hiện hai đường đi khác nhau: K5 vẫn tự phục vụ có kiểm soát; K9 dừng vì chưa xác minh được phạm vi tool. Vì vậy thể hiện rõ hơn đánh đổi giữa làm nhanh và chờ người.
+- **So với Hieu K3–K7:** ca thiếu chỗ K3 gần tương đương K5. Điểm khác biệt nằm ở ca hoàn: K7 chủ yếu kiểm tra không coi lời nóng giận là lệnh thực thi, còn K9 cho thấy ngay cả khi khách nói rõ thì xác nhận vẫn không giải quyết được giới hạn công cụ. K9 giúp lập luận “sửa câu chữ không cứu được” cụ thể hơn.
+- Đây là đánh giá thiết kế dựa trên nội dung spec và fixture, không phải điểm chấm chính thức hoặc khẳng định prototype của branch nào đã được kiểm thử tốt hơn.
+
+### Điều kiện bắt buộc khi dùng K9
+
+Không giữ các khẳng định chưa có căn cứ trong bản gốc: “tool chắc chắn hoàn cả mã”, “nhân viên chắc chắn tách được vé” hoặc “tiền sẽ về trong 90 ngày”. Thay bằng:
+
+> “Mình hiểu bạn chỉ muốn hoàn vé của bé Bình, còn An vẫn tiếp tục bay. Mình chưa gửi yêu cầu hoàn. Dữ liệu hiện có chưa xác minh được tool hỗ trợ hoàn riêng từng hành khách; gửi rồi không huỷ được. Mình sẽ chuyển nhân viên kiểm tra phạm vi xử lý, phương thức nhận và thời gian hoàn trước khi bạn quyết định.”
+
+Như vậy K9 là rủi ro **phạm vi tool chưa được xác minh**, không phải kết luận tự đặt về API. Cũng không coi nhân viên có khả năng phục hồi vô hạn.
+
+### Cách giữ ca đổi nhầm và đồng bộ bài
+
+Giữ **S3 của main** làm ca kiểm tra phục hồi/ca bổ sung: nhận lỗi, không hứa hoàn tác vé, dừng ghi tiếp và chuyển người. Nếu chốt K5–K9 làm hai ca chính, cần cập nhật đồng bộ **CP2, CP3, bảng thử mức CP4, prototype/ảnh CP5 và đánh giá CP6**; không chỉ đổi tên hai ca ở CP2. Thống nhất một hệ mã kịch bản cho bài nộp và giữ bảng ánh xạ khi cần truy về branch gốc.
+
+Nội dung này là đề xuất lựa chọn để nhóm chốt; chưa thay đổi hai ca chính trong `spec.md`.
