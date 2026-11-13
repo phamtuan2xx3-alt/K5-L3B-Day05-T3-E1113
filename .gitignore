@@ -1,0 +1,15 @@
+# Chi theo doi bai nop LAB5; giu tai lieu de o may de tham khao.
+/*
+!/.gitignore
+!/spec.md
+!/prototype/
+
+# Danh sach file can thiet trong prototype.
+/prototype/*
+!/prototype/index.html
+!/prototype/style.css
+!/prototype/app.js
+!/prototype/README.md
+!/prototype/verification.md
+!/prototype/01-doi-nham.png
+!/prototype/02-duyet-doi.png
